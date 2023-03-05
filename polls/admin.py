@@ -4,8 +4,8 @@ from .models import Poll, Choice, Vote
 
 @admin.register(Poll)
 class PollAdmin(admin.ModelAdmin):
-    list_display = ["text", "owner", "pub_date", "active"]
-    search_fields = ["text", "owner__username"]
+    list_display = ["question_text", "owner", "pub_date", "active"]
+    search_fields = ["question_text", "owner__username"]
     list_filter = ["active"]
     date_hierarchy = "pub_date"
 

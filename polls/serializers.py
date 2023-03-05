@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.conf import settings
 
 from .models import Poll, Choice, Vote
 
@@ -10,7 +11,7 @@ class PollListSerializer(serializers.ModelSerializer):
     """ Seralizer for PollSerializer """
     
     class Meta:
-        fields = ('__all__')
+        fields = ['__all__']
         model = poll
         
 class PollDestroySerializer(serializers.ModelSerializer):
@@ -46,7 +47,28 @@ class ChoiceAddSerializer(serializers.ModelSerializer):
         fields = ('__all__')
         model = choice
         
-class VoteSerializer(serializers.ModelSerializer):
+class ChoiceDestroySerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('__all__')
+        model = choice
+        
+class ChoiceRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('__all__')
+        model = choice
+        
+class VoteListSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('__all__')
+        model = vote
+        
+        
+class VoteEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('__all__')
+        model = vote
+        
+class VoteDestroySerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('__all__')
         model = vote

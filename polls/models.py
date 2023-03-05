@@ -1,13 +1,15 @@
 import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from pollme import settings
 from django.utils import timezone
 import secrets
 
 
 class Poll(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='poll_owner')
+    question_text = models.TextField()
     pub_date = models.DateTimeField('date published')
     active = models.BooleanField(default=True)
 
@@ -45,7 +47,7 @@ class Poll(models.Model):
         return res
 
     def __str__(self):
-        return self.text
+        return self.question_text
     
     def was_published_recently(self):
         now = timezone.now()
@@ -61,13 +63,14 @@ class Choice(models.Model):
         return self.vote_set.count()
 
     def __str__(self):
-        return f"{self.poll.text[:25]} - {self.choice_text[:25]}"
+        return f"{self.poll.question_text[:25]} - {self.choice_text[:25]}"
 
 
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.poll.text[:15]} - {self.choice.choice_text[:15]} - {self.user.username}'
+        return f'{self.poll.question_text[:15]} - {self.owners.owner[:15]} - {self.choice.choice_text[:15]} - {self.user.username}'
